@@ -1,0 +1,112 @@
+.banner {
+  height: 56vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative; /* 추가: before 가 제대로 위치하도록 */
+}
+
+.banner::before {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 56vh;
+  content: "";
+  background: linear-gradient(to top, black, transparent);
+  top: 0; /* 추가: before 가 제대로 위치하도록 */
+}
+
+.banner-text-area {
+  width: 36%;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  position: relative; /* 추가: before 가 제대로 위치하도록 */
+}
+
+.banner-text-area > * {
+  z-index: 2;
+}
+
+.banner-info {
+  background: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .banner {
+      height: 50vh;
+  }
+
+  .banner::before {
+      height: 50vh;
+  }
+
+  .banner-text-area {
+      width: 50%;
+      padding: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .banner {
+      height: 45vh;
+  }
+
+  .banner::before {
+      height: 45vh;
+  }
+
+  .banner-text-area {
+      width: 60%;
+      padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+      height: 40vh;
+  }
+
+  .banner::before {
+      height: 40vh;
+  }
+
+  .banner-text-area {
+      width: 70%;
+      padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .banner {
+      height: 35vh;
+  }
+
+  .banner::before {
+      height: 35vh;
+  }
+
+  .banner-text-area {
+      width: 80%;
+      padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+      height: 30vh;
+  }
+
+  .banner::before {
+      height: 30vh;
+  }
+
+  .banner-text-area {
+      width: 90%;
+      padding: 0.5rem;
+  }
+}

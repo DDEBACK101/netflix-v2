@@ -1,0 +1,19 @@
+.carousel-container {
+  overflow: hidden;
+  height: 440px;
+}
+.title {
+  color: #fff;
+  font-weight: bold;
+}
+@media (max-width: 480px) {
+  .carousel-container {
+    height: 330px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .title {
+    color: #fff;
+    font-weight: bold;
+  }
+}
