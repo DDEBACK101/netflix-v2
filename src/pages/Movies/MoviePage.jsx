@@ -6,6 +6,7 @@ import { Alert, Col, Container, Row, Dropdown } from "react-bootstrap";
 import MovieCard from "../../common/MovieCard/MovieCard";
 import ReactPaginate from "react-paginate";
 import "./MoviePage.style.css";
+import { width } from "@fortawesome/free-solid-svg-icons/fa0";
 
 const MoviePage = () => {
   const [query] = useSearchParams();
@@ -20,7 +21,7 @@ const MoviePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setPage(1); // keyword 변경 시 페이지를 1로 초기화
+    setPage(1);
   }, [keyword]);
 
   const handlePageClick = ({ selected }) => {
@@ -31,28 +32,36 @@ const MoviePage = () => {
     setSortOption(option);
   };
 
-  const sortedData = data?.results?.sort((a, b) => {
-    if (sortOption === "most") {
-      return b.popularity - a.popularity;
-    } else if (sortOption === "least") {
-      return a.popularity - b.popularity;
-    } else if (sortOption === "highest") {
-      return b.vote_average - a.vote_average;
-    } else {
-      return a.vote_average - b.vote_average;
+  const getSortOptionText = () => {
+    switch (sortOption) {
+      case "most":
+        return "Most popular";
+      case "least":
+        return "Least popular";
+      case "highest":
+        return "Highest rated";
+      case "lowest":
+        return "Lowest rated";
+      default:
+        return "Sort";
     }
-  }) || [];
+  };
+
+  const sortedData =
+    data?.results?.sort((a, b) => {
+      if (sortOption === "most") return b.popularity - a.popularity;
+      if (sortOption === "least") return a.popularity - b.popularity;
+      if (sortOption === "highest") return b.vote_average - a.vote_average;
+      return a.vote_average - b.vote_average;
+    }) || [];
+
+  const showDetail = (movieId) => {
+    navigate(`/movies/${movieId}`);
+  };
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
+      <div className="loading-wrapper">
         <ClipLoader color={"#123abc"} loading={isLoading} size={150} />
       </div>
     );
@@ -62,78 +71,42 @@ const MoviePage = () => {
     return <Alert variant="danger">{error.message}</Alert>;
   }
 
-  const getSortOptionText = () => {
-    if (sortOption === "most") {
-      return "Most popular";
-    } else if (sortOption === "least") {
-      return "Least popular";
-    } else if (sortOption === "highest") {
-      return "Highest rated";
-    } else {
-      return "Lowest rated";
-    }
-  };
-
-  const showDetail = (movieId) => {
-    navigate(`/movies/${movieId}`);
-  };
-
   return (
     <Container className="moviepage-container">
-      <Row>
-        <h1 className="title">Sort Order</h1>
-        <Col lg={4} xs={12}>
+      <Row className="mb-3">
+        <Col>
+          <h1 className="title">Sort Order</h1>
+        </Col>
+      </Row>
+
+      {/* 정렬 + 페이지네이션 */}
+      <Row className="sort-pagination-wrapper">
+        <Col xs={12} md={4} className="mb-3 mb-md-0">
           <Dropdown>
             <Dropdown.Toggle
               variant="success"
               id="dropdown-basic"
-              style={{
-                background: "linear-gradient(to right, red, black)",
-                width: "20vw",
-                border: "2px solid",
-                borderImage: "linear-gradient(to right, red, black) 1",
-                fontWeight: "bold",
-              }}
+              className="sort-dropdown"
             >
               {getSortOptionText()}
             </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item
-                onClick={() => handleSortOptionChange("most")}
-                style={{ width: "20vw", textAlign: "center" }}
-              >
-                Most popular
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => handleSortOptionChange("least")}
-                style={{ width: "20vw", textAlign: "center" }}
-              >
-                Least popular
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => handleSortOptionChange("highest")}
-                style={{ width: "20vw", textAlign: "center" }}
-              >
-                Highest rated
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => handleSortOptionChange("lowest")}
-                style={{ width: "20vw", textAlign: "center" }}
-              >
-                Lowest rated
-              </Dropdown.Item>
+            <Dropdown.Menu style={{ width: "100%", textAlign: "center" }}>
+              {["most", "least", "highest", "lowest"].map((option) => (
+                <Dropdown.Item
+                  key={option}
+                  className="custom-dropdown-item"
+                  onClick={() => handleSortOptionChange(option)}
+                >
+                  {getSortOptionText(option)}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
         </Col>
-        <Col lg={8} xs={12}>
-          <Row>
-            {sortedData.map((movie, index) => (
-              <Col key={index} lg={4} xs={12}>
-                <MovieCard onClick={() => showDetail(movie.id)} movie={movie} /> {/* onClick 이벤트 핸들러 전달 */}
-              </Col>
-            ))}
-          </Row>
+
+        <Col xs={12} md={8}
+          className="pagenation"
+        >
           <ReactPaginate
             nextLabel="next >"
             onPageChange={handlePageClick}
@@ -156,6 +129,17 @@ const MoviePage = () => {
             forcePage={page - 1}
           />
         </Col>
+      </Row>
+
+      {/* 영화 카드 목록 */}
+      <Row>
+        {sortedData.map((movie, index) => (
+          <Col key={index} lg={4} md={6} xs={12} className="mb-2">
+            <div className="movie-card-wrapper">
+              <MovieCard onClick={() => showDetail(movie.id)} movie={movie} />
+            </div>
+          </Col>
+        ))}
       </Row>
     </Container>
   );
