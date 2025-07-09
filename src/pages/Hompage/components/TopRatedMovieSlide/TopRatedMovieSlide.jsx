@@ -27,7 +27,7 @@ const TopRatedMovieSlide = () => {
     return <Alert variant="danger">{error.message}</Alert>;
   }
   return (
-    <div>
+    <div style={{marginTop:"7vh"}}>
       <MovieSlider
         title="TopRated Movies"
         movies={data.results}

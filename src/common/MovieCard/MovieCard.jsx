@@ -12,12 +12,10 @@ const MovieCard = ({ movie, onClick }) => {
 
   const showGenre = (genreIdList) => {
     if (!genreData) return [];
-
-    const genreNameList = genreIdList.map((id) => {
-      const genreObj = genreData.find((genre) => genre.id === id);
-      return genreObj.name;
-    });
-    return genreNameList;
+    return genreIdList
+      .map((id) => genreData.find((genre) => genre.id === id))
+      .filter(Boolean)
+      .map((genre) => genre.name);
   };
 
   const handleCardClick = () => {
@@ -30,12 +28,9 @@ const MovieCard = ({ movie, onClick }) => {
 
   return (
     <div
-      onClick={handleCardClick} // onClick 이벤트 핸들러를 처리
+      onClick={handleCardClick}
       style={{
-        backgroundImage:
-          "url(" +
-          `https://media.themoviedb.org/t/p/w220_and_h330_face/${movie.poster_path}` +
-          ")",
+        backgroundImage: `url(https://media.themoviedb.org/t/p/w220_and_h330_face/${movie.poster_path})`,
       }}
       className="movie-card"
     >

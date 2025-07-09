@@ -108,5 +108,7 @@
   .banner-text-area {
       width: 90%;
       padding: 0.5rem;
+      padding-top: 14vh;
+      font-size: 1.5vh;
   }
 }

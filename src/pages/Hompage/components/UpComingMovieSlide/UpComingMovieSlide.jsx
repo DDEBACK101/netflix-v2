@@ -27,7 +27,7 @@ const UpComingMovieSlide = () => {
     return <Alert variant="danger">{error.message}</Alert>;
   }
   return (
-    <div>
+    <div style={{ marginTop: "7vh", marginBottom:"5vh" }}>
       <MovieSlider
         title="UpComing Movies"
         movies={data.results}

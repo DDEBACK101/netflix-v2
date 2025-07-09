@@ -58,3 +58,37 @@
 .card-mr {
   margin-right: 0.5vw;
 }
+@media (max-width: 768px) {
+  .movie-card {
+    width: 80%;
+    height: auto;
+    aspect-ratio: 2/3;
+  }
+
+  .overlay {
+    font-size: 1vh;
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 2vh;
+  }
+
+  .genre {
+    font-size: 1.5vh;
+  }
+
+  .star_img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .rated,
+  .popularity,
+  .age {
+    font-size: 1.5vh;
+  }
+  .movie-card:hover {
+    transform: none; /* 모바일에서 scale 금지 */
+  }
+}
